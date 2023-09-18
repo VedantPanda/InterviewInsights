@@ -1,0 +1,12 @@
+<% layout('layouts/boilerplate') %>
+<h1>All Interview Insights</h1>
+
+<br>
+<% if(experiences.length!=0){ %>
+<% for(let experience of experiences){ %>
+    <a href="/insights/experience/<%=experience.id%>"><%= experience.title %></a>
+    <hr>
+<% } %>
+<% } else{ %>
+    <h3>No Interview Experiences yet!</h3>
+<% } %>

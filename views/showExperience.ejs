@@ -1,0 +1,52 @@
+<% layout('layouts/boilerplate') %>
+<div class="row">
+    <div class="col-6">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><%=experience.title%></h5>
+                <hr>
+                <b>Company: </b><%=experience.company%>
+                <hr>
+                <b>Position: </b><%=experience.position%>
+                <hr>
+                <p class="card-text"><%=experience.experience%></p>
+            </div>
+        </div>
+        <% if(currentUser && experience.author.equals(currentUser._id)){ %>
+                <div class="card-body">
+                    <a href="/insights/editExperience/<%=experience.id%>" class="card-link btn btn-info">Edit Experience</a>
+                    <form action="/insights/deleteExperience/<%=experience.id%>?_method=DELETE" class="d-inline" method="post">
+                        <button class="btn btn-danger">Delete Experience</button>
+                    </form>
+                </div>
+        <% } %>
+    </div>
+<div class="col-6">
+    <% if(currentUser){ %>
+            <h2>Add Comment</h2>
+            <form action="/insights/comments/add/<%=experience.id%>" method="post">
+                <div class="mb-3">
+                    <textarea name="comment" id="body" cols="30" rows="3" required></textarea>
+                </div>
+                <button class="btn btn-success">Submit</button>
+            </form>
+    <% } %>
+    <% if(experience.comments.length!=0){ %>
+            <% for(let comment of experience.comments){ %>
+                    <div class="mb-3 card">
+                        <div class="card-body">
+                            <h5 class="card-title"><%=comment.person.username%></h5>
+                            <p class="card-text"><b><%=comment.body%></p>
+                            <% if(currentUser && comment.person.equals(currentUser._id)){ %>
+                                    <form action="/insights/comments/delete/<%=comment.id%>/<%=experience.id%>?_method=DELETE" method="post">
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                            <% } %>
+                        </div>
+                    </div>
+            <% } %>
+    <% }else{ %>
+            <h4>No Comments yet</h4>
+    <% } %>
+</div>
+</div>
